@@ -9,19 +9,22 @@ namespace PathfindingAstar
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        readonly int ScreenWidth = 1920;
+        readonly int ScreenHeight = 1080;
+
+        private Scene scene;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = ScreenWidth;
+            _graphics.PreferredBackBufferHeight = ScreenHeight;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -29,7 +32,8 @@ namespace PathfindingAstar
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            scene = new SceneBehaviorTest();
+            scene.BuildScene(GraphicsDevice, Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -37,16 +41,14 @@ namespace PathfindingAstar
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            scene.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            scene.Draw(GraphicsDevice, _spriteBatch);
 
             base.Draw(gameTime);
         }
