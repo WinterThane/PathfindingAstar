@@ -64,9 +64,7 @@ namespace PathfindingAstar
 
     public class BehaviorWander : Behavior
     {
-        private static Random random = new Random();
-
-        int changeInterval;
+        readonly int changeInterval;
         int tick;
         Vector2 direction;
 
@@ -101,7 +99,10 @@ namespace PathfindingAstar
         public override void Update(Actor actor)
         {
             Vector2 targetDirection = target.Position - actor.Position;
-            targetDirection.Normalize();
+            if (targetDirection != Vector2.Zero)
+            {
+                targetDirection.Normalize();
+            }
             actor.Direction += targetDirection * Weight;
         }
     }
@@ -122,7 +123,10 @@ namespace PathfindingAstar
             Vector2 targetDirection = actor.Position - target.Position;
             if (targetDirection.Length() < radius)
             {
-                targetDirection.Normalize();
+                if (targetDirection != Vector2.Zero)
+                {
+                    targetDirection.Normalize();
+                }
                 actor.Direction += targetDirection * Weight;
             }
         }

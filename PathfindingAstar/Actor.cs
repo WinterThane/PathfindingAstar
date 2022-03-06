@@ -17,6 +17,7 @@ namespace PathfindingAstar
         public float Speed;
         public Vector2 Origin;
         public List<Behavior> BehaviorList = new List<Behavior>();
+        public float Radius;
 
         public static Vector2 GetRandomPosition(int rangeX, int rangeY)
         {
@@ -36,16 +37,22 @@ namespace PathfindingAstar
             Color = color;
             Texture = texture;
             Origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            Radius = Origin.X;
         }
 
-        public void Update()
+        public virtual void DeleteActor()
+        {
+            Actors.Remove(this);
+        }
+
+        public virtual void Update()
         {
             foreach (var behavior in BehaviorList)
             {
                 behavior.Update(this);
             }
 
-            if (Direction.Length() > 0f)
+            if (Direction != Vector2.Zero)
             {
                 Direction.Normalize();
             }
@@ -53,7 +60,7 @@ namespace PathfindingAstar
             Position += Direction * Speed;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             float rotation = (float)Math.Atan2(Direction.Y, Direction.X) + MathHelper.Pi / 2;
 

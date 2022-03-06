@@ -16,9 +16,11 @@ namespace PathfindingAstar
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = ScreenWidth;
-            _graphics.PreferredBackBufferHeight = ScreenHeight;
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = ScreenWidth,
+                PreferredBackBufferHeight = ScreenHeight
+            };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -32,7 +34,11 @@ namespace PathfindingAstar
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            scene = new SceneBehaviorTest();
+            Style.LoadContent(GraphicsDevice, Content);
+
+            //scene = new SceneBehaviorTest();
+            //scene.BuildScene(GraphicsDevice, Content);
+            scene = new SceneNavigation();
             scene.BuildScene(GraphicsDevice, Content);
         }
 
