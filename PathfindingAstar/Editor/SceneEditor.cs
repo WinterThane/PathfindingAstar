@@ -32,11 +32,14 @@ namespace PathfindingAstar
             MouseInput.MouseDown += MouseInput_MouseDown;
             MouseInput.MouseUp += MouseInput_MouseUp;
 
-            NodeBuilder.BuildGrid(new Vector2(100, 100), 9, 7, 80);
+            NodeBuilder.BuildGrid(new Vector2(600, 250), 9, 7, 80);
             (Actor.Actors[40] as Node).DeleteActor();
             (Actor.Actors[31] as Node).DeleteActor();
             (Actor.Actors[22] as Node).DeleteActor();
             //NodeBuilder.BuildCircle(new Vector2(500, 500), 300, 20);
+
+            //NodeBuilder.BuildGrid(new Vector2(320, 220), 3, 3, 80);
+            //NodeBuilder.BuildCircle(new Vector2(400, 300), 200, 8);0
         }
 
         private void KeyboardInput_KeyRelease(Keys key, KeyboardState keyState)
@@ -82,6 +85,24 @@ namespace PathfindingAstar
                     {
                         nodeA.DualDisconnect(nodeB);
                     }
+                }
+            }
+            else if (key == Keys.P && Actor.Selection.Count >= 2)
+            {
+                Node start = Actor.Selection[0] as Node;
+                Node goal = Actor.LastSelected as Node;
+
+                if (start != null && goal != null)
+                {
+                    AStarStep.Begin(start, goal);
+                    AStarStep.Continue();
+                }
+            }
+            else if (key == Keys.Space)
+            {
+                if (AStarStep.InProgress)
+                {
+                    AStarStep.Continue();
                 }
             }
         }
@@ -169,8 +190,8 @@ namespace PathfindingAstar
         public void Draw(SpriteBatch spriteBatch)
         {
             string text = string.Format("Mode: {0}", editMode);
-            spriteBatch.DrawString(Style.FontLarge, "Q:Select mode, W:Move mode, Shift+Click:Create node, C:Create connection, X:Disconnect, Delete:Remove node", new Vector2(10, 10), Color.Red);
-            spriteBatch.DrawString(Style.FontLarge, text, new Vector2(10, 40), Color.White);
+            spriteBatch.DrawString(Style.FontLarge, "Q:Select mode, W:Move mode, Shift+Click:Create node, C:Create connection,\nX:Disconnect, Delete:Remove node, P:Start path, Space:Continue path", new Vector2(10, 10), Color.Red);
+            spriteBatch.DrawString(Style.FontLarge, text, new Vector2(10, 55), Color.White);
         }
     }
 }

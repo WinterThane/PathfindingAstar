@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using PathfindingAstar.Editor;
 
 namespace PathfindingAstar
 {
@@ -29,7 +28,7 @@ namespace PathfindingAstar
         {
             graphicsDevice.Clear(new Color(0, 0, 0));
 
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend);
 
             foreach (var actor in Actor.Actors)
             {

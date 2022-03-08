@@ -15,6 +15,12 @@ namespace PathfindingAstar
         public static Color BrightTextColor = new Color(255, 255, 255);
         public static Color DarkTextColor = new Color(150, 150, 150);
 
+        public static float LineLayer = 0f;
+        public static float ParentLayer = 0.25f;
+        public static float ActorLayer = 0.5f;
+        public static float MarkerLayer = 0.75f;
+        public static float TextLayer = 1f;
+
         public static SpriteFont FontLarge;
         public static SpriteFont FontNormal;
         public static SpriteFont FontSmall;
