@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace PathfindingAstar.Editor
+namespace PathfindingAstar
 {
     public delegate void MouseClickHandler(Vector2 Position);
     public delegate void MouseMoveHandler(Vector2 Position, Vector2 movement);

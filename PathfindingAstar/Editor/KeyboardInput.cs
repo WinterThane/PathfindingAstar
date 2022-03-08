@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
-namespace PathfindingAstar.Editor
+namespace PathfindingAstar
 {
     public delegate void KeyHandler(Keys key, KeyboardState keyState);
 

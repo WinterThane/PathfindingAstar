@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace PathfindingAstar.Editor
+namespace PathfindingAstar
 {
     enum EditMode
     {
@@ -31,6 +31,12 @@ namespace PathfindingAstar.Editor
             MouseInput.MouseMove += MouseInput_MouseMove;
             MouseInput.MouseDown += MouseInput_MouseDown;
             MouseInput.MouseUp += MouseInput_MouseUp;
+
+            NodeBuilder.BuildGrid(new Vector2(100, 100), 9, 7, 80);
+            (Actor.Actors[40] as Node).DeleteActor();
+            (Actor.Actors[31] as Node).DeleteActor();
+            (Actor.Actors[22] as Node).DeleteActor();
+            //NodeBuilder.BuildCircle(new Vector2(500, 500), 300, 20);
         }
 
         private void KeyboardInput_KeyRelease(Keys key, KeyboardState keyState)
@@ -42,6 +48,41 @@ namespace PathfindingAstar.Editor
             else if (key == Keys.W)
             {
                 editMode = EditMode.Move;
+            }
+            else if (key == Keys.Delete)
+            {
+                foreach (var actor in Actor.Selection)
+                {
+                    actor.DeleteActor();
+                }
+
+                Actor.Selection.Clear();
+            }
+            else if (key == Keys.C && Actor.Selection.Count >= 2)
+            {
+                for (int i = 1; i < Actor.Selection.Count; i++)
+                {
+                    Node nodeA = Actor.Selection[i - 1] as Node;
+                    Node nodeB = Actor.Selection[i] as Node;
+
+                    if (nodeA != null && nodeB != null)
+                    {
+                        nodeA.DualConnection(nodeB);
+                    }
+                }
+            }
+            else if (key == Keys.X && Actor.Selection.Count >= 2)
+            {
+                for (int i = 1; i < Actor.Selection.Count; i++)
+                {
+                    Node nodeA = Actor.Selection[i - 1] as Node;
+                    Node nodeB = Actor.Selection[i] as Node;
+
+                    if (nodeA != null && nodeB != null)
+                    {
+                        nodeA.DualDisconnect(nodeB);
+                    }
+                }
             }
         }
 
@@ -58,6 +99,22 @@ namespace PathfindingAstar.Editor
 
         private void MouseInput_MouseDown(Vector2 position)
         {
+            if (KeyboardInput.IsShiftDown)
+            {
+                Node node = new Node();
+                node.Position = position;
+                
+                Node lastNode = Actor.LastSelected as Node;
+                if (lastNode != null)
+                {
+                    node.DualConnection(lastNode);
+                }
+                Actor.Selection.Clear();
+                node.Select();
+
+                return;
+            }
+
             Actor actor = GetActorAt(position);
             if (actor != null)
             {
@@ -112,7 +169,7 @@ namespace PathfindingAstar.Editor
         public void Draw(SpriteBatch spriteBatch)
         {
             string text = string.Format("Mode: {0}", editMode);
-            spriteBatch.DrawString(Style.FontLarge, "Q:Select mode, W:Move mode", new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(Style.FontLarge, "Q:Select mode, W:Move mode, Shift+Click:Create node, C:Create connection, X:Disconnect, Delete:Remove node", new Vector2(10, 10), Color.Red);
             spriteBatch.DrawString(Style.FontLarge, text, new Vector2(10, 40), Color.White);
         }
     }
