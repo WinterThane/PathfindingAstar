@@ -38,7 +38,7 @@ namespace PathfindingAstar
             FillTexture = new Texture2D(graphicsDevice, 1, 1);
             FillTexture.SetData(new Color[] { Color.White });
 
-            ArrowTexture = contentManager.Load<Texture2D>("arrow2");
+            ArrowTexture = contentManager.Load<Texture2D>("arrow");
             NodeTexture = contentManager.Load<Texture2D>("node");
 
             MarkerTexture = contentManager.Load<Texture2D>("circle");

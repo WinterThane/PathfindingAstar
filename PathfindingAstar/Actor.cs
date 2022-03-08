@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PathfindingAstar
 {
-    public class Actor
+    public partial class Actor
     {
         public static List<Actor> Actors = new List<Actor>();
         private static Random random = new Random();
@@ -62,9 +62,15 @@ namespace PathfindingAstar
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            Color color = Color;
+            if (IsSelected)
+            {
+                color = Style.SelectionColor;
+            }
+
             float rotation = (float)Math.Atan2(Direction.Y, Direction.X) + MathHelper.Pi / 2;
 
-            spriteBatch.Draw(Texture, Position, null, Color, rotation, Origin, 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, color, rotation, Origin, 0.5f, SpriteEffects.None, 0f);
         }
     }
 }
