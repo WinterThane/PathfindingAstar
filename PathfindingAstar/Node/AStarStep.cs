@@ -28,6 +28,11 @@ namespace PathfindingAstar
             return 0;
         }
 
+        private static float GetHScore(Vector2 vectorA, Vector2 vectorB)
+        {
+            return Vector2.Distance(vectorA, vectorB);
+        }
+
         public static void Begin(Node start, Node goal)
         {
             foreach (var node in Actor.Actors.OfType<Node>())
@@ -83,6 +88,7 @@ namespace PathfindingAstar
                     openList.Add(neighbor);
                     neighbor.Parent = current;
                     neighbor.GScore = neighborGScore;
+                    neighbor.HScore = GetHScore(neighbor.Position, goal.Position);
                     neighbor.FScore = neighbor.GScore + neighbor.HScore;
                 }
                 else if (neighborGScore < neighbor.GScore)
