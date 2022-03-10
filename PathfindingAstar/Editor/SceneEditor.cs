@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 
 namespace PathfindingAstar
 {
@@ -107,8 +108,19 @@ namespace PathfindingAstar
             }
         }
 
-        private void MouseInput_MouseMove(Vector2 Position, Vector2 movement)
+        private void MouseInput_MouseMove(Vector2 position, Vector2 movement)
         {
+            if (KeyboardInput.IsKeyDown(Keys.Z) && Actor.Selection.Count > 0)
+            {
+                Node start = Actor.Selection[0] as Node;
+                Node goal = GetClosestNode(position);
+
+                if (start != null && goal != null)
+                {
+                    AStar.FindPath(start, goal);
+                }
+            }
+
             if (editMode == EditMode.Move && MouseInput.IsLeftButtonDown)
             {
                 foreach (var actor in Actor.Selection)
@@ -185,6 +197,24 @@ namespace PathfindingAstar
             }
 
             return null;
+        }
+
+        private Node GetClosestNode(Vector2 position)
+        {
+            Node result = null;
+            float shortestDistance = float.PositiveInfinity;
+
+            foreach (var node in Actor.Actors.OfType<Node>())
+            {
+                float distance = Vector2.Distance(node.Position, position);
+                if (distance < shortestDistance)
+                {
+                    result = node;
+                    shortestDistance = distance;
+                }
+            }
+
+            return result;
         }
 
         public void Draw(SpriteBatch spriteBatch)
