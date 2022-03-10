@@ -70,7 +70,7 @@ namespace PathfindingAstar
 
             float rotation = (float)Math.Atan2(Direction.Y, Direction.X) + MathHelper.Pi / 2;
 
-            spriteBatch.Draw(Texture, Position, null, color, rotation, Origin, 0.5f, SpriteEffects.None, Style.ActorLayer);
+            spriteBatch.Draw(Texture, Position, null, color, rotation, Origin, 0.5f, SpriteEffects.None, Style.TextLayer);
         }
     }
 }

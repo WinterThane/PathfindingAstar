@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace PathfindingAstar
 {
@@ -15,6 +16,11 @@ namespace PathfindingAstar
     public class SceneEditor
     {
         EditMode editMode;
+
+        Actor bot;
+        BehaviorNavigation nav;
+
+        Random random = new Random();
 
         public SceneEditor()
         {
@@ -40,7 +46,22 @@ namespace PathfindingAstar
             //NodeBuilder.BuildCircle(new Vector2(500, 500), 300, 20);
 
             //NodeBuilder.BuildGrid(new Vector2(320, 220), 3, 3, 80);
-            //NodeBuilder.BuildCircle(new Vector2(400, 300), 200, 8);0
+            //NodeBuilder.BuildCircle(new Vector2(400, 300), 200, 8);
+
+            nav = new BehaviorNavigation(0.2f);
+            nav.GoalReached += Nav_GoalReached;
+
+            bot = new Actor(Style.ArrowTexture, Color.LightGreen);
+            bot.Position = new Vector2(925, 490);
+            bot.BehaviorList.Add(nav);
+        }
+
+        private void Nav_GoalReached(object sender, EventArgs e)
+        {
+            //bot.Speed = 0f;
+            Node start = GetClosestNode(bot.Position);
+            Node goal = GetRandomNode();
+            NavigateToNode(start, goal);
         }
 
         private void KeyboardInput_KeyRelease(Keys key, KeyboardState keyState)
@@ -105,6 +126,12 @@ namespace PathfindingAstar
                 {
                     AStarStep.Continue();
                 }
+            }
+            else if (key == Keys.Enter)
+            {
+                Node start = GetClosestNode(bot.Position);
+                Node goal = Actor.LastSelected as Node;
+                NavigateToNode(start, goal);
             }
         }
 
@@ -217,11 +244,42 @@ namespace PathfindingAstar
             return result;
         }
 
+        private void NavigateToNode(Node start, Node goal)
+        {
+            if (start != null && goal != null)
+            {
+                List<Node> path = AStar.FindPath(start, goal);
+
+                if (path != null)
+                {
+                    nav.BeginNavigation(path);
+                    bot.Speed = 2f;
+                }
+            }
+        }
+
+        private Node GetRandomNode()
+        {
+            IEnumerable<Node> nodes = Actor.Actors.OfType<Node>();
+            return nodes.ElementAt(random.Next(nodes.Count()));
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             string text = string.Format("Mode: {0}", editMode);
-            spriteBatch.DrawString(Style.FontLarge, "Q:Select mode, W:Move mode, Shift+Click:Create node, C:Create connection,\nX:Disconnect, Delete:Remove node, P:Start path, Space:Continue path", new Vector2(10, 10), Color.Red);
-            spriteBatch.DrawString(Style.FontLarge, text, new Vector2(10, 55), Color.White);
+            spriteBatch.DrawString(Style.FontLarge, text, new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(Style.FontLarge, "Q:Select mode,\n" +
+                "W:Move mode,\n" +
+                "Shift+Click:Create node,\n" +
+                "Ctrl+Click:Multi-select,\n" +
+                "C:Create connection,\n" +
+                "X:Disconnect,\n" +
+                "Delete:Remove node,\n" +
+                "P:Start path,\n" +
+                "Space:Continue path,\n" +
+                "Z:Hold for A*,\n" +
+                "Enter:Start navigation", new Vector2(10, 35), Color.Red);
+            
         }
     }
 }
