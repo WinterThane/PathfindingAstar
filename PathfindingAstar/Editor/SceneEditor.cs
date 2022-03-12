@@ -39,7 +39,7 @@ namespace PathfindingAstar
             MouseInput.MouseDown += MouseInput_MouseDown;
             MouseInput.MouseUp += MouseInput_MouseUp;
 
-            //NodeBuilder.BuildGrid(new Vector2(600, 250), 9, 7, 80);
+            //NodeBuilder.BuildGrid(new Vector2(35, 15), 24, 14, 80);
             //(Actor.Actors[40] as Node).DeleteActor();
             //(Actor.Actors[31] as Node).DeleteActor();
             //(Actor.Actors[22] as Node).DeleteActor();
@@ -59,8 +59,8 @@ namespace PathfindingAstar
         private void Nav_GoalReached(object sender, EventArgs e)
         {
             //bot.Speed = 0f;
-            Node start = GetClosestNode(bot.Position);
-            Node goal = GetRandomNode();
+            Node start = Node.GetClosestNode(bot.Position);
+            Node goal = Node.GetRandomNode(random);
             NavigateToNode(start, goal);
         }
 
@@ -129,7 +129,7 @@ namespace PathfindingAstar
             }
             else if (key == Keys.Enter)
             {
-                Node start = GetClosestNode(bot.Position);
+                Node start = Node.GetClosestNode(bot.Position);
                 Node goal = Actor.LastSelected as Node;
                 NavigateToNode(start, goal);
             }
@@ -148,7 +148,7 @@ namespace PathfindingAstar
             if (KeyboardInput.IsKeyDown(Keys.Z) && Actor.Selection.Count > 0)
             {
                 Node start = Actor.Selection[0] as Node;
-                Node goal = GetClosestNode(position);
+                Node goal = Node.GetClosestNode(position);
 
                 if (start != null && goal != null)
                 {
@@ -234,24 +234,6 @@ namespace PathfindingAstar
             return null;
         }
 
-        private Node GetClosestNode(Vector2 position)
-        {
-            Node result = null;
-            float shortestDistance = float.PositiveInfinity;
-
-            foreach (var node in Actor.Actors.OfType<Node>())
-            {
-                float distance = Vector2.Distance(node.Position, position);
-                if (distance < shortestDistance)
-                {
-                    result = node;
-                    shortestDistance = distance;
-                }
-            }
-
-            return result;
-        }
-
         private void NavigateToNode(Node start, Node goal)
         {
             if (start != null && goal != null)
@@ -266,17 +248,14 @@ namespace PathfindingAstar
             }
         }
 
-        private Node GetRandomNode()
-        {
-            IEnumerable<Node> nodes = Actor.Actors.OfType<Node>();
-            return nodes.ElementAt(random.Next(nodes.Count()));
-        }
-
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(Style.BackgroundTexture, Vector2.Zero, Color.White);
+
             string text = string.Format("Mode: {0}", editMode);
-            spriteBatch.DrawString(Style.FontLarge, text, new Vector2(10, 10), Color.White);
-            spriteBatch.DrawString(Style.FontLarge, "Q:Select mode\n" +
+            spriteBatch.DrawString(Style.FontLarge, text, new Vector2(10, 10), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, Style.TextLayer);
+            spriteBatch.DrawString(Style.FontLarge, 
+                "Q:Select mode\n" +
                 "W:Move mode\n" +
                 "Shift+Click:Create node\n" +
                 "Ctrl+Click:Multi-select\n" +
@@ -288,7 +267,7 @@ namespace PathfindingAstar
                 "Z:Hold for A*\n" +
                 "Enter:Start navigation\n" +
                 "Ctrl+S:Save grid\n" +
-                "Ctrl+O:Load grid", new Vector2(10, 35), Color.Red);
+                "Ctrl+O:Load grid", new Vector2(10, 35), Color.Black, 0f, Vector2.Zero, 0.8f, SpriteEffects.None, Style.TextLayer);
             
         }
     }

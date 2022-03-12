@@ -10,6 +10,7 @@ namespace PathfindingAstar
     public class Node : Actor
     {
         public List<Node> Connected = new List<Node>();
+        public bool DebugPaths = false;
 
         // A* state info
         public Node Parent;
@@ -68,6 +69,11 @@ namespace PathfindingAstar
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if(!DebugPaths)
+            {
+                return;
+            }
+
             base.Draw(spriteBatch);
 
             // draw lines
@@ -129,6 +135,30 @@ namespace PathfindingAstar
                 textPosition = Position + new Vector2(-Origin.X - textDimensions.X, -Origin.Y - textDimensions.Y);
                 spriteBatch.DrawString(Style.FontSmall, text, textPosition, Style.BrightTextColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, Style.TextLayer);
             }
+        }
+
+        public static Node GetClosestNode(Vector2 position)
+        {
+            Node result = null;
+            float shortestDistance = float.PositiveInfinity;
+
+            foreach (var node in Actors.OfType<Node>())
+            {
+                float distance = Vector2.Distance(node.Position, position);
+                if (distance < shortestDistance)
+                {
+                    result = node;
+                    shortestDistance = distance;
+                }
+            }
+
+            return result;
+        }
+
+        public static Node GetRandomNode(Random random)
+        {
+            IEnumerable<Node> nodes = Actors.OfType<Node>();
+            return nodes.ElementAt(random.Next(nodes.Count()));
         }
     }
 }

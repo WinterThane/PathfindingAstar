@@ -38,7 +38,12 @@ namespace PathfindingAstar
 
             //scene = new SceneBehaviorTest();
             //scene.BuildScene(GraphicsDevice, Content);
-            scene = new SceneNavigation();
+
+            // editor
+            //scene = new SceneNavigation();
+            //scene.BuildScene(GraphicsDevice, Content);
+
+            scene = new SceneGame();
             scene.BuildScene(GraphicsDevice, Content);
         }
 

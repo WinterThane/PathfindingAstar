@@ -10,6 +10,7 @@ namespace PathfindingAstar
         List<Node> path;
 
         public event EventHandler GoalReached = delegate (object sender, EventArgs e) { };
+        public event EventHandler NodeReached = delegate (object sender, EventArgs e) { };
 
         public BehaviorNavigation(float weight) : base(weight) { }
         
@@ -31,6 +32,10 @@ namespace PathfindingAstar
                     if (nodeIndex == path.Count)
                     {
                         GoalReached(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        NodeReached(this, EventArgs.Empty);
                     }
 
                     return;

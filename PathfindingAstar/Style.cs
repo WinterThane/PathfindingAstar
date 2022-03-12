@@ -8,17 +8,17 @@ namespace PathfindingAstar
     {
         public static Color NodeColor = new Color(200, 200, 200);
         public static Color SelectionColor = new Color(144, 238, 144);
-        public static Color LineColor = new Color(80, 80, 80);
+        public static Color LineColor = new Color(8, 8, 8);
         public static Color ClosedColor = new Color(255, 200, 160);
         public static Color PathColor = new Color(180, 180, 255);
 
         public static Color BrightTextColor = new Color(255, 255, 255);
         public static Color DarkTextColor = new Color(150, 150, 150);
 
-        public static float LineLayer = 0f;
-        public static float ParentLayer = 0.25f;
-        public static float ActorLayer = 0.5f;
-        public static float MarkerLayer = 0.75f;
+        public static float LineLayer = 0.1f;
+        public static float ParentLayer = 0.1f;
+        public static float ActorLayer = 0.9f;
+        public static float MarkerLayer = 0.1f;
         public static float TextLayer = 1f;
 
         public static SpriteFont FontLarge;
@@ -28,6 +28,10 @@ namespace PathfindingAstar
         public static Texture2D FillTexture;
         public static Texture2D ArrowTexture;
         public static Texture2D NodeTexture;
+        public static Texture2D HealthTexture;
+        public static Texture2D BackgroundTexture;
+        public static Texture2D EnemyTexture;
+        public static Texture2D PlayerTexture;
 
         public static Texture2D MarkerTexture;
         public static Vector2 MarkerOrigin;
@@ -46,6 +50,10 @@ namespace PathfindingAstar
 
             ArrowTexture = contentManager.Load<Texture2D>("arrow");
             NodeTexture = contentManager.Load<Texture2D>("node");
+            HealthTexture = contentManager.Load<Texture2D>("health");
+            BackgroundTexture = contentManager.Load<Texture2D>("background");
+            EnemyTexture = contentManager.Load<Texture2D>("enemy");
+            PlayerTexture = contentManager.Load<Texture2D>("player");
 
             MarkerTexture = contentManager.Load<Texture2D>("circle");
             MarkerOrigin = new Vector2(MarkerTexture.Width / 2, MarkerTexture.Height / 2);
