@@ -49,7 +49,7 @@
 /processorParam:TextureFormat=Color
 /build:circle.png
 
-#begin E:/enemy.png
+#begin enemy.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -59,7 +59,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:E:/enemy.png;enemy.png
+/build:enemy.png
 
 #begin Fonts/fontLarge.spritefont
 /importer:FontDescriptionImporter
